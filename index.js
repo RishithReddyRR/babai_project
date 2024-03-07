@@ -37,6 +37,7 @@ app.route("/create-task").post(isAuthenticatedUser,createTask)
 //creating a tsub ask #2nd task given
 app.route("/create-sub-task").post(isAuthenticatedUser,createSubTask)
 //getting all tasks of a user #3rd task
+//http://localhost:4000/get-user-tasks?priority=&due_date=&page_no=(use this url for applying filter)
 app.route("/get-user-tasks").get(isAuthenticatedUser,getUserTasks)
 //getting all sub tasks of a user #4th task
 app.route("/get-user-sub-tasks").get(isAuthenticatedUser,getUserSubTasks)

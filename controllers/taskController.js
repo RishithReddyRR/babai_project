@@ -49,7 +49,13 @@ exports.createSubTask = asyncErrorHandler(async (req, res, next) => {
 
 //getting all tasks
 exports.getUserTasks = asyncErrorHandler(async (req, res, next) => {
-  const tasks = await task.find({ user_id: req.user._id });
+  if(req.query.priority==""){
+    req.query.priority=[0,1,2,3]
+  }
+  // console.log(req.query)
+  const tasks = await task.find({
+    $and:[{user_id: req.user._id},{priority:req.query.priority},{due_date:{$regex:req.query.due_date,$options:"i"}}]
+  }).skip(req.query.page_no*10).limit(10)
   res.status(200).json({
     success: true,
     tasks,
@@ -57,7 +63,8 @@ exports.getUserTasks = asyncErrorHandler(async (req, res, next) => {
 });
 //getting all sub tasks
 exports.getUserSubTasks = asyncErrorHandler(async (req, res, next) => {
-  const sub_tasks = await subTask.find({ user_id: req.user._id });
+ 
+  const sub_tasks = await subTask.find({ user_id: req.user._id});
   res.status(200).json({
     success: true,
     sub_tasks,
